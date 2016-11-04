@@ -69,58 +69,8 @@ public class TopoPath {
         if(inCount != 1 || outCount != 1)
             return false;
 
-        int [] incoming = new int[matrix.length];
-        int cnt = 0;
-
-        // Count the number of incoming edges incident to each vertex. For sparse
-        // graphs, this could be made more efficient by using an adjacency list.
-        for (int i = 0; i < matrix.length; i++)
-            for (int j = 0; j < matrix.length; j++)
-                incoming[j] += (matrix[i][j] ? 1 : 0);
-
-        Queue<Integer> q = new ArrayDeque<Integer>();
-
-        // Any vertex with zero incoming edges is ready to be visited, so add it to
-        // the queue.
-        for (int i = 0; i < matrix.length; i++)
-            if (incoming[i] == 0)
-                q.add(i);
-
-        while (!q.isEmpty())
-        {
-            // Pull a vertex out of the queue and add it to the topological sort.
-            int node = q.remove();
-            System.out.println(node);
-
-            ////////////////////////////////////////////////////////////////////////
-            //
-            // Alternatively, you could create an ArrayList (a class member) that
-            // contains the names of these courses indexed by the node values, and
-            // print them out like so:
-            //
-            // System.out.println(courseNames.get(node));
-            //
-            // We did that in class, but I leave it to you as an exercise to
-            // replicate that functionality.
-            //
-            ////////////////////////////////////////////////////////////////////////
-
-            // Count the number of unique vertices we see.
-            ++cnt;
-
-            // All vertices we can reach via an edge from the current vertex should
-            // have their incoming edge counts decremented. If one of these hits
-            // zero, add it to the queue, as it's ready to be included in our
-            // topological sort.
-            for (int i = 0; i < matrix.length; i++)
-                if (matrix[node][i] && --incoming[i] == 0)
-                    q.add(i);
-        }
-
-        // If we pass out of the loop without including each vertex in our
-        // topological sort, we must have a cycle in the graph.
-        if (cnt != matrix.length)
-            System.out.println("Error: Graph contains a cycle!");
+        // This marks the start of Szumlanski's "toposort.java" code, with my changes
+//        ArrayList<Vertex>
 
         return true;
     }
