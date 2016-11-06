@@ -51,6 +51,7 @@ public class TopoPath {
 
         }
 
+        Queue<Vertex> cue = new ArrayDeque<Vertex>();
         // counts the number of vertices with an in/out degree of 0
         // if there is more or less than one of either, there is no valid topopath
         for(Vertex vertex : vertices)
@@ -58,8 +59,13 @@ public class TopoPath {
             if(vertex.getOutDegree() == 0)
                 outCount++;
             if(vertex.getInDegree() == 0)
+            {
                 inCount++;
 
+                // if there is 1 vertex of in-degree 0, add it to the queue
+                // of vertices to visit during the toposort code
+                cue.add(vertex);
+            }
             // if both are true, it's an island and there isn't a path
             // that can reach it no matter what
             if(vertex.getOutDegree() == 0 && vertex.getInDegree() == 0)
@@ -69,8 +75,45 @@ public class TopoPath {
         if(inCount != 1 || outCount != 1)
             return false;
 
-        // This marks the start of Szumlanski's "toposort.java" code, with my changes
-//        ArrayList<Vertex>
+        int unique = 0;
+        ArrayList<Vertex> possiblePath = new ArrayList<>();
+        // This marks the start of Prof. Szumlanski's "toposort.java" code, with my changes
+        while(!cue.isEmpty())
+        {
+            Vertex current = cue.remove();
+            current.markVisited();
+
+            // creating a possible hamiltonian path out of our sort
+            possiblePath.add(current);
+
+            // counting the number of unique vertices we see
+            if(current.isVisited())
+                unique++;
+
+            for(int i = 0; i < vertexNum; i++)
+            {
+                // if the popped vertex is adjacent to the vertex at i,
+                // the decrement i's indegree
+                if(current.isAdjacent(vertices.get(i)))
+                {
+                    vertices.get(i).downInDegree();
+
+                    // if vertex has indegree of 0, add to queue
+                    if(vertices.get(i).getInDegree() == 0)
+                        cue.add(vertices.get(i));
+                }
+            }
+        }
+
+        // graph contains a cycle, no topological path
+        if(unique != vertexNum)
+            return false;
+
+        for(int i = 0; i < vertexNum - 1; i++)
+        {
+            if(!possiblePath.get(i).isVisited() || possiblePath.get(i).isAdjacent(possiblePath.get(i + 1)))
+                return false;
+        }
 
         return true;
     }
@@ -145,6 +188,11 @@ class Vertex
     public void upInDegree(int up)
     {
         inDegree = up;
+    }
+
+    public void downInDegree()
+    {
+        inDegree--;
     }
 
     public void upOutDegree()
