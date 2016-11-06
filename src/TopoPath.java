@@ -87,9 +87,11 @@ public class TopoPath {
             possiblePath.add(current);
 
             // counting the number of unique vertices we see
-            if(current.isVisited())
+             if(current.isVisited())
                 unique++;
 
+
+            // back to my code
             for(int i = 0; i < vertexNum; i++)
             {
                 // if the popped vertex is adjacent to the vertex at i,
@@ -111,7 +113,7 @@ public class TopoPath {
 
         for(int i = 0; i < vertexNum - 1; i++)
         {
-            if(!possiblePath.get(i).isVisited() || possiblePath.get(i).isAdjacent(possiblePath.get(i + 1)))
+            if(!possiblePath.get(i).isVisited() || !possiblePath.get(i).isAdjacent(possiblePath.get(i + 1)))
                 return false;
         }
 
