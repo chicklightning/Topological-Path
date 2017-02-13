@@ -1,4 +1,4 @@
-// README FOR TOPOLOGICAL PATH CODE ASSIGNMENT
+README FOR TOPOLOGICAL PATH CODE ASSIGNMENT
 
 This assignment was meant to be used in tandem with a file containing
 a "main" method and a string containing a file name with relevant
